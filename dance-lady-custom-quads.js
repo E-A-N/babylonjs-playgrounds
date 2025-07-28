@@ -32,13 +32,14 @@ let delayCreateScene = function () {
             animationGroup.play(true);
         }, delay);
 
-        //color the vertices
-        let quads = 0;
         if (idNum > 0){
             return;
         }
+
+        let quads = 0;
         for (let i in characterMeshes){
             let mesh = characterMeshes[i];
+            mesh.makeGeometryUnique();
             mesh.convertToUnIndexedMesh();
             mesh.useVertexColors = true;
 
@@ -48,11 +49,9 @@ let delayCreateScene = function () {
                 const colors = [];
 
                 for (let tri = 0; tri < numTriangles; tri += 2) {
-                    let color = new BABYLON.Color4(0, 0, 0, 1.0);
+                    let color = new BABYLON.Color4(Math.random(), Math.random(), Math.random(), 1.0);
                     quads++;
-                    if(quads > 100 && quads < 400){
-                        color = new BABYLON.Color4(Math.random(), Math.random(), Math.random(), 1.0);
-                    }
+
                     // Each triangle has 3 vertices
                     for (let i = 0; i < 6; i++) {
                         colors.push(color.r, color.g, color.b, color.a);
