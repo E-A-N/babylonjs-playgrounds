@@ -1,11 +1,11 @@
-var delayCreateScene = function () {
-    var scene = new BABYLON.Scene(engine);
+let delayCreateScene = function () {
+    let scene = new BABYLON.Scene(engine);
     let nodeNames = [];
 
-    var duplicate = function(container, offset, delay, idNum) {
+    let duplicate = function(container, offset, delay, idNum) {
         let entries = container.instantiateModelsToScene();
 
-        for (var node of entries.rootNodes) {
+        for (let node of entries.rootNodes) {
             node.position.x += offset;
         }
 
@@ -93,4 +93,3 @@ var delayCreateScene = function () {
     });
     return scene;
 }
-
