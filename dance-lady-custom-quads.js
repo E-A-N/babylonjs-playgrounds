@@ -1,5 +1,11 @@
 let delayCreateScene = function () {
     let scene = new BABYLON.Scene(engine);
+
+        // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+
+    // Default intensity is 1. Let's dim the light a small amount
+    light.intensity = 1.5;
     let nodeNames = [];
 
     let duplicate = function(container, offset, delay, idNum) {
@@ -31,6 +37,7 @@ let delayCreateScene = function () {
         setTimeout(() => {
             animationGroup.play(true);
         }, delay);
+
 
         if (idNum > 0){
             return;
@@ -89,6 +96,23 @@ let delayCreateScene = function () {
 
         scene.createDefaultCamera(true, true, true);
         scene.createDefaultEnvironment();
-    });
+    })
+    .then(() => {
+        // Creates the post process
+        //see https://doc.babylonjs.com/toolsAndResources/assetLibraries/postProcessLibrary/digitalRainPP/
+        var postProcess = new BABYLON.DigitalRainPostProcess(
+            "DigitalRain", 
+            scene.cameras[0], 
+            {
+                font: "12px Monospace"
+            }
+        );
+
+        var alpha = 0;
+        scene.registerBeforeRender(function() {
+            alpha += 0.01;
+            postProcess.mixToNormal = Math.cos(alpha) * 0.5 + 0.5; // between 0 and 1.
+        });
+    })
     return scene;
 }
